@@ -5,8 +5,8 @@
 package ur_os.memory.segmentation;
 
 import ur_os.memory.MemoryAddress;
-import ur_os.memory.ProcessMemoryManager;
 import ur_os.memory.MemoryManagerType;
+import ur_os.memory.ProcessMemoryManager;
 
 /**
  *
@@ -69,4 +69,15 @@ public class PMM_Segmentation extends ProcessMemoryManager{
         return pvmm.getVictim(memoryAccesses,this.loadedSegments);
     }
     
+    // TODO: implmentar fucnion de  calcularFragmentacionExterna
+    
+    @Override
+    public void printIndicator(){
+        st = this.getSt();
+        
+        double fragSt = st.calcularFragmentacionExterna();
+
+        System.out.println("Fragmentación externa de St: " + fragSt + " bytes");
+
+    }
 }

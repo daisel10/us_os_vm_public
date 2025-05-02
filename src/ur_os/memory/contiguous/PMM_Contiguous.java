@@ -122,5 +122,9 @@ public class PMM_Contiguous extends ProcessMemoryManager{
     public int getVictim() {
         return -1; //Not a necessary method for this class
     }
-    
+    @Override
+    public void printIndicator() {
+        System.out.println("Memory Slot: " + memorySlot + " Virtual Memory Slot: " + vMemorySlot + " Valid: " + valid + " Dirty: " + dirty);
+    }
 }
+

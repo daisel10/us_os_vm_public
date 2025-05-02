@@ -5,6 +5,8 @@
 package ur_os.memory.segmentation;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 import ur_os.memory.MemoryAddress;
 
@@ -156,47 +158,49 @@ public class SegmentTable {
     }
 
     public double calcularFragmentacionExterna() {
-        segmentTable = getTable();
-        if (segmentTable.size() <= 1) {
-            return 0.0; // No hay fragmentación entre segmentos
-        }
-    
-        // Obtener y ordenar los segmentos por base
-        ArrayList<SegmentTableEntry> segmentosOrdenados = new ArrayList<>(segmentTable);
-        segmentosOrdenados.sort((s1, s2) -> Integer.compare(s1.getBase(), s2.getBase()));
-    
-        ArrayList<Integer> espaciosLibres = new ArrayList<>();
-    
-        for (int i = 0; i < segmentosOrdenados.size() - 1; i++) {
-            int finActual = segmentosOrdenados.get(i).getBase() + segmentosOrdenados.get(i).getLimit();
-            int inicioSiguiente = segmentosOrdenados.get(i + 1).getBase();
-    
-            int hueco = inicioSiguiente - finActual;
-            if (hueco > 0) {
-                espaciosLibres.add(hueco);
-            }
-        }
-    
-        if (espaciosLibres.size() <= 1) {
-            return 0.0; // Solo un hueco => no hay fragmentación externa "promediable"
-        }
-    
-        // Calcular promedio sin contar el mayor bloque libre
-        int max = Integer.MIN_VALUE;
-        int suma = 0;
-    
-        for (int espacio : espaciosLibres) {
-            if (espacio > max) {
-                max = espacio;
-            }
-        }
-    
-        for (int espacio : espaciosLibres) {
-            if (espacio != max) {
-                suma += espacio;
-            }
-        }
-    
-        return (double) suma / (espaciosLibres.size() - 1);
+    ArrayList<SegmentTableEntry> segmentTable = getTable();
+    if (segmentTable.size() <= 1) {
+        return 0.0;
     }
+
+    // Ordenar los segmentos por su dirección base
+    ArrayList<SegmentTableEntry> segmentosOrdenados = new ArrayList<>(segmentTable);
+    segmentosOrdenados.sort(Comparator.comparingInt(SegmentTableEntry::getBase));
+
+    // Calcular huecos (espacios libres) entre segmentos contiguos
+    ArrayList<Integer> espaciosLibres = new ArrayList<>();
+
+    for (int i = 0; i < segmentosOrdenados.size() - 1; i++) {
+        int finActual = segmentosOrdenados.get(i).getBase() + segmentosOrdenados.get(i).getLimit();
+        int inicioSiguiente = segmentosOrdenados.get(i + 1).getBase();
+        int hueco = inicioSiguiente - finActual;
+
+        if (hueco > 0) {
+            espaciosLibres.add(hueco);
+        }
+    }
+
+    if (espaciosLibres.size() <= 1) {
+        return 0.0;
+    }
+
+    // Excluir solo una vez el mayor espacio libre
+    int max = Collections.max(espaciosLibres);
+    int suma = 0;
+    boolean excluido = false;
+
+    for (int espacio : espaciosLibres) {
+        if (espacio == max && !excluido) {
+            excluido = true;
+        } else {
+            suma += espacio;
+        }
+    }
+
+    int divisor = espaciosLibres.size() - 1;
+    return divisor > 0 ? (double) suma / divisor : 0.0;
 }
+
+}
+
+

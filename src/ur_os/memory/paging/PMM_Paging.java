@@ -5,10 +5,9 @@
 package ur_os.memory.paging;
 
 import ur_os.memory.MemoryAddress;
-import ur_os.memory.ProcessMemoryManager;
 import ur_os.memory.MemoryManagerType;
+import ur_os.memory.ProcessMemoryManager;
 import ur_os.system.OS;
-import ur_os.virtualmemory.ProcessVirtualMemoryManager;
 
 /**
  *
@@ -180,5 +179,18 @@ public class PMM_Paging extends ProcessMemoryManager{
         else
             return -1;
     }
-    
+    // TODO: implement this method calcularFragmentacionInterna
+
+    @Override
+    public void printIndicator(){
+        vpt = this.getVPT();
+        pt = this.getPT();
+
+        int fragVPT = vpt.calcularFragmentacionInterna();
+        int fragPT = pt.calcularFragmentacionInterna();
+
+        System.out.println("Fragmentación interna de VPT: " + fragVPT + " bytes");
+        System.out.println("Fragmentación interna de PT: " + fragPT + " bytes");
+    }
+
 }

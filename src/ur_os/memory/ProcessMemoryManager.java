@@ -5,8 +5,8 @@
 package ur_os.memory;
 
 import java.util.LinkedList;
-import ur_os.virtualmemory.ProcessVirtualMemoryManager;
 import ur_os.process.Process;
+import ur_os.virtualmemory.ProcessVirtualMemoryManager;
 /**
  *
  * @author super
@@ -76,5 +76,11 @@ public abstract class ProcessMemoryManager {
     }
     
     public abstract int getVictim();
+
     
+
+    // TODO: implementar calcularFragmentacionExterna
+    
+    // DO: implement calcularFragmentacionInterna
+    public  abstract void printIndicator();
 }
