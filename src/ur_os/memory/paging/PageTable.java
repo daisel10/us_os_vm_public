@@ -147,4 +147,12 @@ public class PageTable {
         
         return sb.toString();
     }
+    
+    public int calcularFragmentacionInterna() {
+        // int programSize; //Size of the program in bytes
+        // int size; //Number of pages that the program uses
+        int totalMemoriaAsignada = getSize() * getPageSize();
+        int fragmentacionInterna = totalMemoriaAsignada - getProgramSize();
+        return fragmentacionInterna;
+    }
 }

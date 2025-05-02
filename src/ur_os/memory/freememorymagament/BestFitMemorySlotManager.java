@@ -16,10 +16,30 @@ public class BestFitMemorySlotManager extends FreeMemorySlotManager{
     
     @Override
     public MemorySlot getSlot(int size) {
-        MemorySlot m = null;
-        //ToDo
+        MemorySlot bestFit = null;
+
         
-        return m;
+        for (MemorySlot memorySlot : list) {
+            if (memorySlot.canContain(size)) {
+                if (bestFit == null || memorySlot.getSize() < bestFit.getSize()) {
+                    bestFit = memorySlot;
+                }
+            }
+        }
+
+        if (bestFit != null) {
+            if (bestFit.getSize() == size) {        
+                list.remove(bestFit);
+                return bestFit;
+            } else {
+                
+                return bestFit.assignMemory(size);
+            }
+        }
+
+        
+        System.out.println("Error - Memory cannot allocate a slot big enough for the requested memory");
+        return null;
     }
     
 }
