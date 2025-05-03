@@ -5,19 +5,17 @@
  */
 package ur_os.system;
 
-import ur_os.process.ProcessInstructionType;
-import ur_os.memory.contiguous.SMM_Contiguous;
-import ur_os.memory.Memory;
-import ur_os.memory.MemoryManagerType;
-import ur_os.process.Process;
 import java.util.ArrayList;
 import java.util.Random;
+import ur_os.memory.Memory;
 import ur_os.memory.MemoryInstruction;
+import ur_os.memory.MemoryManagerType;
 import ur_os.memory.MemoryOperationType;
 import ur_os.memory.freememorymagament.FreeMemorySlotManager;
 import ur_os.process.EndInstruction;
 import ur_os.process.IOInstruction;
 import ur_os.process.Instruction;
+import ur_os.process.Process;
 import ur_os.virtualmemory.SwapMemory;
 
 /**
@@ -62,7 +60,8 @@ public class SystemOS implements Runnable{
         processes = new ArrayList();
         //initSimulationQueue();
         //initSimulationQueueSimple();
-        initSimulationQueueSimpler();
+        initSimulationQueueWith8Processes();
+        // initSimulationQueueSimpler();
         
 
         showProcesses();
@@ -172,7 +171,104 @@ public class SystemOS implements Runnable{
         
         clock = 0;
     }
-    
+    public void initSimulationQueueWith8Processes() {
+        Instruction temp;
+        Process p;
+        int tempSize;
+
+        // Process 0
+        p = new Process(0, 0);
+        tempSize = r.nextInt(MAX_PROC_SIZE - 1) + 1;
+        p.setSize(tempSize);
+        p.addCPUInstructions(3);
+        temp = new MemoryInstruction(MemoryOperationType.LOAD, r.nextInt(tempSize), (byte) -1, 4);
+        p.addInstruction(temp);
+        p.addCPUInstructions(2);
+        p.addInstruction(new EndInstruction());
+        processes.add(p);
+
+        // Process 1
+        p = new Process(1, 2);
+        tempSize = r.nextInt(MAX_PROC_SIZE - 1) + 1;
+        p.setSize(tempSize);
+        p.addCPUInstructions(2);
+        temp = new MemoryInstruction(MemoryOperationType.STORE, r.nextInt(tempSize), (byte) 55, 3);
+        p.addInstruction(temp);
+        p.addCPUInstructions(3);
+        p.addInstruction(new EndInstruction());
+        processes.add(p);
+
+        // Process 2
+        p = new Process(2, 4);
+        tempSize = r.nextInt(MAX_PROC_SIZE - 1) + 1;
+        p.setSize(tempSize);
+        p.addCPUInstructions(4);
+        temp = new MemoryInstruction(MemoryOperationType.LOAD, r.nextInt(tempSize), (byte) -1, 5);
+        p.addInstruction(temp);
+        p.addCPUInstructions(2);
+        p.addInstruction(new EndInstruction());
+        processes.add(p);
+
+        // Process 3
+        p = new Process(3, 6);
+        tempSize = r.nextInt(MAX_PROC_SIZE - 1) + 1;
+        p.setSize(tempSize);
+        p.addCPUInstructions(5);
+        temp = new MemoryInstruction(MemoryOperationType.STORE, r.nextInt(tempSize), (byte) 33, 3);
+        p.addInstruction(temp);
+        p.addCPUInstructions(3);
+        p.addInstruction(new EndInstruction());
+        processes.add(p);
+
+        // Process 4
+        p = new Process(4, 8);
+        tempSize = r.nextInt(MAX_PROC_SIZE - 1) + 1;
+        p.setSize(tempSize);
+        p.addCPUInstructions(3);
+        temp = new MemoryInstruction(MemoryOperationType.LOAD, r.nextInt(tempSize), (byte) -1, 2);
+        p.addInstruction(temp);
+        p.addCPUInstructions(2);
+        temp = new MemoryInstruction(MemoryOperationType.STORE, r.nextInt(tempSize), (byte) 88, 2);
+        p.addInstruction(temp);
+        p.addInstruction(new EndInstruction());
+        processes.add(p);
+
+        // Process 5
+        p = new Process(5, 10);
+        tempSize = r.nextInt(MAX_PROC_SIZE - 1) + 1;
+        p.setSize(tempSize);
+        p.addCPUInstructions(2);
+        temp = new MemoryInstruction(MemoryOperationType.STORE, r.nextInt(tempSize), (byte) 19, 4);
+        p.addInstruction(temp);
+        p.addCPUInstructions(3);
+        p.addInstruction(new EndInstruction());
+        processes.add(p);
+
+        // Process 6
+        p = new Process(6, 12);
+        tempSize = r.nextInt(MAX_PROC_SIZE - 1) + 1;
+        p.setSize(tempSize);
+        p.addCPUInstructions(6);
+        temp = new MemoryInstruction(MemoryOperationType.LOAD, r.nextInt(tempSize), (byte) -1, 3);
+        p.addInstruction(temp);
+        p.addCPUInstructions(1);
+        p.addInstruction(new EndInstruction());
+        processes.add(p);
+
+        // Process 7
+        p = new Process(7, 14);
+        tempSize = r.nextInt(MAX_PROC_SIZE - 1) + 1;
+        p.setSize(tempSize);
+        p.addCPUInstructions(4);
+        temp = new MemoryInstruction(MemoryOperationType.STORE, r.nextInt(tempSize), (byte) 101, 2);
+        p.addInstruction(temp);
+        p.addCPUInstructions(2);
+        p.addInstruction(new EndInstruction());
+        processes.add(p);
+
+        clock = 0;
+    }
+
     public void initSimulationQueueSimpler3(){
         
         
